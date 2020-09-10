@@ -48,7 +48,7 @@ describe('integration', function() {
   it('should contain the expected elements on the page', function(done) {
     sitepage.property('title')
       .then(function(title) {
-        assert.equal('Swagger UI', title);
+        assert.equal('Rech Informática', title);
         return sitepage.evaluate(function() {
           return document.querySelector('.swagger-ui').innerHTML;
         });
@@ -80,7 +80,7 @@ describe('integration', function() {
   it('should contain the expected elements on the page', function(done) {
     sitepage.property('title')
       .then(function(title) {
-        assert.equal('Swagger UI', title);
+        assert.equal('Rech Informática', title);
         return sitepage.evaluate(function() {
           return document.querySelector('.swagger-ui').innerHTML;
         });
@@ -112,7 +112,7 @@ describe('integration', function() {
   it('should contain the expected elements on the page for api-docs-using-object', function(done) {
     sitepage.property('title')
       .then(function(title) {
-        assert.equal('Swagger UI', title);
+        assert.equal('Rech Informática', title);
         return sitepage.evaluate(function() {
           return document.querySelector('.swagger-ui').innerHTML;
         });
@@ -144,7 +144,7 @@ describe('integration', function() {
   it('should contain the expected elements on the page for api-docs-with-null', function(done) {
     sitepage.property('title')
       .then(function(title) {
-        assert.equal('Swagger UI', title);
+        assert.equal('Rech Informática', title);
         return sitepage.evaluate(function() {
           return document.querySelector('.swagger-ui').innerHTML;
         });

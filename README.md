@@ -1,85 +1,97 @@
-# Swagger UI Express
+# Rech Swagger Express
 
-This module allows you to serve auto-generated [swagger-ui](https://swagger.io/tools/swagger-ui/) generated API docs from express, based on a `swagger.json` file. The result is living documentation for your API hosted from your API server via a route.
+Esta biblioteca permite que você forneça documentação de API gerada dinâmicamente pelo  [swagger-ui](https://swagger.io/tools/swagger-ui/) através do Express, baseados em um documento `api.json`. O resultado é uma documentação dinâmica acessada no servidor através de uma rota.
 
-Swagger version is pulled from npm module swagger-ui-dist. Please use a lock file or specify the version of swagger-ui-dist you want to ensure it is consistent across environments.
+A versão do Swagger é definida automaticamente através da biblioteca [rech-swagger-dist](https://github.com/RechInformatica/rech-swagger-dist), que é uma dependência desta biblioteca.
 
-You may be also interested in:
+- [Como instalar](#como-instalar)
+- [Como usar](#como-usar)
+    - [swagger-jsdoc](#swagger-jsdoc)
+    - [Swagger Explorer](#swagger-explorer)
+    - [Customizando o Swagger](#customizando-o-swagger)
+    - [CSS customizado](#css-customizado)
+    - [CSS customizado com um arquivo](#css-customizado-com-um-arquivo)
+    - [Javascript personalizado](#javascript-personalizado)
+    - [Carregar documento usando url](#carregar-documento-usando-url)
+    - [Carregar documento com um arquivo yaml](#carregar-documento-com-um-arquivo-yaml)
+    - [Modificar documento on the fly antes de carregar](#modificar-documento-on-the-fly-antes-de-carregar)
+- [Requisitos](#requisitos)
+- [Testes](#testes)
 
-* [swagger-jsdoc](https://github.com/Surnet/swagger-jsdoc/blob/master/docs/GETTING-STARTED.md): Allows you to markup routes
-with jsdoc comments. It then produces a full swagger yml config dynamically, which you can pass to this module to produce documentation. See below under the usage section for more info.
-* [swagger tools](https://github.com/swagger-api): Various tools, including swagger editor, swagger code gen etc.
+## Como instalar
 
-## Usage
+**Antes de instalar a biblioteca é necessário ter configurado o proxy interno do NPM. Caso ainda não esteja configurado verifique a [wiki](http://intranet/wiki/index.php/Proxy_NPM).**
 
-Install using npm:
+Instale através do NPM:
 
 ```bash
-$ npm install swagger-ui-express
+npm install rech-swagger-express
 ```
 
-Express setup `app.js`
+## Como usar
+
+Configurando a biblioteca no Express `app.js`
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument));
 ```
 
-or if you are using Express router
+ou se você está usando o Express router
 
 ```javascript
 const router = require('express').Router();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument  = require('./api.json');
 
-router.use('/api-docs', swaggerUi.serve);
-router.get('/api-docs', swaggerUi.setup(swaggerDocument));
+router.use('/api-docs', rechSwaggerExpress.serve);
+router.get('/api-docs', rechSwaggerExpress.setup(apiDocument));
 ```
 
-Open http://`<app_host>`:`<app_port>`/api-docs in your browser to view the documentation.
+Acesse http://`<app_host>`:`<app_port>`/api-docs no seu navegador para visualizar a documentação.
 
-If you want to set up routing based on the swagger document checkout [swagger-express-router](https://www.npmjs.com/package/swagger-express-router)
+Se você prefere configurar as rotas baseado no documento Swagger, verifique a biblioteca [swagger-express-router](https://www.npmjs.com/package/swagger-express-router).
 
-### [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc)
+### swagger-jsdoc
 
-If you are using swagger-jsdoc simply pass the swaggerSpec into the setup function:
+Se você está usando a biblioteca [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc), passe o valor de swaggerSpec na função de configuração.
 
 ```javascript
-// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+// Inicialização do swagger-jsdoc -> retorna uma especificação swagger validada em formato JSON
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(swaggerSpec));
 ```
 
 ### Swagger Explorer
 
-By default the Swagger Explorer bar is hidden, to display it pass true as the 'explorer' property of the options to the setup function:
+Por padrão, o campo de pesquisa na barra superior fica oculto, para exibi-lo passe `true` na propriedade `explorer` nas opções de configuração.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 var options = {
   explorer: true
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument, options));
 ```
 
-### Custom swagger options
+### Customizando o Swagger
 
-To pass custom options e.g. validatorUrl, to the SwaggerUi client pass an object as the 'swaggerOptions' property of the options to the setup function:
+Para passar opções customizadas para o client Swagger (por exemplo, validatorUrl), passe um objeto contendo a propriedade `swaggerOptions` nas opções de configuração:
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 var options = {
   swaggerOptions: {
@@ -87,72 +99,72 @@ var options = {
   }
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument, options));
 ```
 
-For all the available options, refer to [Swagger UI Configuration](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md)
+Para verificar as opções de configuração disponíveis, consulte as [configurações do Swagger](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md)
 
-### Custom CSS styles
+### CSS customizado
 
-To customize the style of the swagger page, you can pass custom CSS as the 'customCss' property of the options to the setup function.
+Para customizar o CSS da página, você pode utilizar a propriedade `customCss` nas opções de configuração:
 
-E.g. to hide the swagger header:
+Exemplo de como ocultar o header do Swagger:
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 var options = {
   customCss: '.swagger-ui .topbar { display: none }'
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument, options));
 ```
 
-### Custom CSS styles from Url
+### CSS customizado com um arquivo
 
-You can also pass the url to a custom css file, the value must be the public url of the file and can be relative or absolute to the swagger path.
+Você também pode passar a url de um arquivo css, o valor precisa ser a url pública do arquivo e pode ser relativa ou absoluta em relação ao caminho do Swagger.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 var options = {
   customCssUrl: '/custom.css'
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument, options));
 ```
 
-### Custom JS
+### Javascript personalizado
 
-If you would like to have full control over your HTML you can provide your own javascript file, value accepts absolute or relative path. Value must be the public url of the js file.
+Se você deseja ter controle total sobre o HTML, é possível utilizar seu próprio arquivo javascript, é possível utilizar o caminho absoluto ou relativo do arquivo. O valor precisa ser a url pública do arquivo javascript.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 var options = {
   customJs: '/custom.js'
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument, options));
 ```
 
-### Load swagger from url
+### Carregar documento usando url
 
-To load your swagger from a url instead of injecting the document, pass `null` as the first parameter, and pass the relative or absolute URL as the 'url' property to 'swaggerOptions' in the setup function.
+É possível carregar seu documento de especificação através de url, ao invés de injetar o mesmo. Passe `null` como primeiro parâmetro e passe a url absoluta ou relativa na propriedade `swaggerOptions` nas opções de configuração.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
+const rechSwaggerExpress = require('rech-swagger-express');
 
 var options = {
   swaggerOptions: {
@@ -160,15 +172,15 @@ var options = {
   }
 }
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(null, options));
 ```
 
-To load multiple swagger documents from urls as a dropdown in the explorer bar, pass an array of object with `name` and `url` to 'urls' property to 'swaggerOptions' in the setup function.
+Para carregar vários arquivos de especificação através de urls como dropdown na barra superior, passe um array de objetos com as proprieades `name` e `url` na propriedade `urls` nas opções de configuração.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
+const rechSwaggerExpress = require('rech-swagger-express');
 
 var options = {
   explorer: true,
@@ -186,54 +198,52 @@ var options = {
   }
 }
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, options));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(null, options));
 ```
 
-Make sure 'explorer' option is set to 'true' in your setup options for the dropdown to be visible.
+Lembre de configurar a opção `explorer` como `true` nas opções de configuração para deixar o dropdown visível.
 
 
-### Load swagger from yaml file
+### Carregar documento com um arquivo yaml
 
-To load your swagger specification yaml file you need to use a module able to convert yaml to json; for instance `yamljs`.
+Para carregar a especificação através de um arquivo yml é necessário uma biblioteca capaz de converter yaml para json, por exemplo `yamljs`.
 
     npm install --save yamljs
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
+const rechSwaggerExpress = require('rech-swagger-express');
 const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const apiDocument = YAML.load('./api.yaml');
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', rechSwaggerExpress.serve, rechSwaggerExpress.setup(apiDocument));
 ```
 
+### Modificar documento on the fly antes de carregar
 
-### Modify swagger file on the fly before load
-
-To dynamically set the host, or any other content, in the swagger file based on the incoming request object you may pass the json via the req object; to achieve this just do not pass the the swagger json to the setup function and it will look for `swaggerDoc` in the `req` object.
+Para definir o host dinamicamente, ou qualquer outro conteúdo, é possível alterar dinâmicamente o documento de especificação e passar o mesmo para continuar a request; para fazer isso não passe o documento de especificação nas opções de configuração e a biblioteca irá procurar pelo documento de especificação no objeto `request`.
 
 ```javascript
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const rechSwaggerExpress = require('rech-swagger-express');
+const apiDocument = require('./api.json');
 
 app.use('/api-docs', function(req, res, next){
-    swaggerDocument.host = req.get('host');
-    req.swaggerDoc = swaggerDocument;
+    apiDocument.host = req.get('host');
+    req.swaggerDoc = apiDocument;
     next();
-}, swaggerUi.serve, swaggerUi.setup());
+}, rechSwaggerExpress.serve, rechSwaggerExpress.setup());
 ```
 
+## Requisitos
 
-## Requirements
+* Node v10.10.32 ou superior
+* Express 4 ou superior
 
-* Node v0.10.32 or above
-* Express 4 or above
+## Testes
 
-## Testing
-
-* Install phantom
+* Instale o phantom
 * `npm install`
 * `npm test`

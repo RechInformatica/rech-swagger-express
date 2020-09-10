@@ -1,15 +1,15 @@
 'use strict'
 
 var express = require('express')
-var swaggerUi = require('swagger-ui-dist')
-var favIconHtml = '<link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />' +
-  '<link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />'
+var swaggerUi = require('rech-swagger-dist')
+var favIconHtml = '<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />' +
+  '<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />'
 var swaggerInit = ''
 
 var htmlTplString = `
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title><% title %></title>
@@ -156,7 +156,7 @@ var generateHTML = function (swaggerDoc, opts, options, customCss, customfavIcon
   var explorerString = isExplorer ? '' : '.swagger-ui .topbar .download-url-wrapper { display: none }'
   customCss = explorerString + ' ' + customCss || explorerString
   customfavIcon = customfavIcon || false
-  customSiteTitle = customSiteTitle || 'Swagger UI'
+  customSiteTitle = customSiteTitle || 'Rech Informática'
   _htmlTplString = _htmlTplString || htmlTplString
   _jsTplString = _jsTplString || jsTplString
 
