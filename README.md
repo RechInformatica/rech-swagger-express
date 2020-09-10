@@ -4,20 +4,6 @@ Esta biblioteca permite que você forneça documentação de API gerada dinâmic
 
 A versão do Swagger é definida automaticamente através da biblioteca [rech-swagger-dist](https://github.com/RechInformatica/rech-swagger-dist), que é uma dependência desta biblioteca.
 
-- [Como instalar](#como-instalar)
-- [Como usar](#como-usar)
-    - [swagger-jsdoc](#swagger-jsdoc)
-    - [Swagger Explorer](#swagger-explorer)
-    - [Customizando o Swagger](#customizando-o-swagger)
-    - [CSS customizado](#css-customizado)
-    - [CSS customizado com um arquivo](#css-customizado-com-um-arquivo)
-    - [Javascript personalizado](#javascript-personalizado)
-    - [Carregar documento usando url](#carregar-documento-usando-url)
-    - [Carregar documento com um arquivo yaml](#carregar-documento-com-um-arquivo-yaml)
-    - [Modificar documento on the fly antes de carregar](#modificar-documento-on-the-fly-antes-de-carregar)
-- [Requisitos](#requisitos)
-- [Testes](#testes)
-
 ## Como instalar
 
 **Antes de instalar a biblioteca é necessário ter configurado o proxy interno do NPM. Caso ainda não esteja configurado verifique a [wiki](http://intranet/wiki/index.php/Proxy_NPM).**
