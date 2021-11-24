@@ -1,6 +1,6 @@
 {
   "name": "rech-swagger-express",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Rech Swagger Express",
   "main": "./index.js",
   "files": [
@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/RechInformatica/rech-swagger-express.git#readme",
   "dependencies": {
-    "rech-swagger-dist": "^1.5.0"
+    "rech-swagger-dist": "^1.6.0"
   },
   "peerDependencies": {
     "express": ">=4.0.0"
